@@ -37,11 +37,18 @@ public class Main {
 
         }
 
+        map = strS.collect(Collectors.toMap(s -> s, s -> 1, (a, b) -> a + 1));
+        combinedMap = Stream.concat(combinedMap.entrySet().stream(), map.entrySet().stream())
+                .collect(Collectors.groupingBy(Map.Entry::getKey,
+                        Collectors.summingInt(Map.Entry::getValue)));
+
         File fileR = new File("result.txt");
         file.createNewFile();
         FileOutputStream fileOutputStream = new FileOutputStream(fileR, false);
         Writer writer = new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
         writer.write(combinedMap.toString());
+        fileOutputStream.close();
+        strS.close();
 
        // System.out.println(combinedMap);
 
